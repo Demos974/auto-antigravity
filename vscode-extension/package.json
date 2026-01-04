@@ -1,8 +1,8 @@
 {
   "name": "auto-antigravity",
   "displayName": "Auto-Antigravity",
-  "description": "Framework multi-agents avec monitoring avance pour Google Antigravity IDE",
-  "version": "0.2.0",
+  "description": "Framework multi-agents avec monitoring avancé pour Google Antigravity IDE",
+  "version": "1.8.9",
   "publisher": "auto-antigravity",
   "repository": {
     "type": "git",
@@ -18,11 +18,26 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "main": "./src/extension-simple.js",
+  "main": "./src/extension.js",
   "contributes": {
     "configuration": {
       "title": "Auto-Antigravity",
       "properties": {
+        "autoAntigravity.server.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Démarrer le serveur automatiquement"
+        },
+        "autoAntigravity.server.host": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "Adresse du serveur"
+        },
+        "autoAntigravity.server.port": {
+          "type": "number",
+          "default": 5555,
+          "description": "Port du serveur"
+        },
         "autoAntigravity.monitoring.enabled": {
           "type": "boolean",
           "default": true,
@@ -30,13 +45,18 @@
         },
         "autoAntigravity.monitoring.refreshInterval": {
           "type": "number",
-          "default": 5000,
-          "description": "Intervalle de rafraichissement du dashboard (ms)"
+          "default": 10000,
+          "description": "Intervalle de rafraîchissement (ms)"
         },
         "autoAntigravity.autoAccept.enabled": {
           "type": "boolean",
           "default": false,
           "description": "Active le mode Auto-Accept"
+        },
+        "autoAntigravity.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Clé API Antigravity pour les quotas externes (optionnel)"
         }
       }
     },
@@ -55,41 +75,117 @@
           "type": "webview",
           "id": "autoAntigravity.dashboard",
           "name": "Dashboard"
+        },
+        {
+          "id": "autoAntigravity.agentsView",
+          "name": "Agents"
+        },
+        {
+          "id": "autoAntigravity.cacheView",
+          "name": "Cache"
+        },
+        {
+          "id": "autoAntigravity.actionsView",
+          "name": "Actions"
         }
       ]
     },
     "commands": [
       {
         "command": "autoAntigravity.showDashboard",
-        "title": "Show Dashboard",
+        "title": "Afficher le Dashboard",
         "icon": "$(dashboard)",
         "category": "Auto-Antigravity"
       },
       {
         "command": "autoAntigravity.refresh",
-        "title": "Refresh Dashboard",
+        "title": "Rafraîchir",
         "icon": "$(refresh)",
         "category": "Auto-Antigravity"
       },
       {
         "command": "autoAntigravity.toggleAutoAccept",
-        "title": "Toggle Auto-Accept",
+        "title": "Activer/Désactiver Auto-Accept",
         "icon": "$(checklist)",
         "category": "Auto-Antigravity"
       },
       {
         "command": "autoAntigravity.executeTask",
-        "title": "Execute New Task",
+        "title": "Exécuter une Tâche",
         "icon": "$(run)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.clearCache",
+        "title": "Vider le Cache",
+        "icon": "$(trash)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.runDiagnostics",
+        "title": "Exécuter les Diagnostics",
+        "icon": "$(search)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.startServer",
+        "title": "Démarrer le Serveur",
+        "icon": "$(play)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.stopServer",
+        "title": "Arrêter le Serveur",
+        "icon": "$(debug-stop)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.showOutput",
+        "title": "Afficher les Logs",
+        "icon": "$(output)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.restartAgent",
+        "title": "Redémarrer l'Agent",
+        "icon": "$(debug-restart)",
         "category": "Auto-Antigravity"
       }
     ],
-    "statusBarItems": [
+    "menus": {
+      "view/title": [
+        {
+          "command": "autoAntigravity.refresh",
+          "when": "view == autoAntigravity.agentsView || view == autoAntigravity.cacheView || view == autoAntigravity.actionsView",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "autoAntigravity.restartAgent",
+          "when": "view == autoAntigravity.agentsView && viewItem == agent",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "autoAntigravity.restartAgent",
+          "when": "false"
+        }
+      ]
+    },
+    "viewsWelcome": [
       {
-        "id": "autoAntigravity.status",
-        "name": "Auto-Antigravity Status",
-        "alignment": "right",
-        "text": "$(info) AA: Ready"
+        "view": "autoAntigravity.agentsView",
+        "contents": "Chargement des agents...\n[Rafraîchir](command:autoAntigravity.refresh)"
+      },
+      {
+        "view": "autoAntigravity.cacheView",
+        "contents": "Aucune entrée de cache.\n[Rafraîchir](command:autoAntigravity.refresh)"
+      },
+      {
+        "view": "autoAntigravity.actionsView",
+        "contents": "Aucune action récente.\n[Rafraîchir](command:autoAntigravity.refresh)"
       }
     ]
   },

@@ -140,6 +140,17 @@ class MonitoringDashboard:
                 status="idle"
             )
             logger.info(f"Agent {agent_name} ({agent_type}) enregistré dans le monitoring")
+
+    def register_model(self, model_name: str, family: ModelFamily, thinking_limit: int = 100000, flow_limit: int = 100000):
+        """Enregistre un modèle pour le suivi des quotas (sans incrémenter l'usage)"""
+        if model_name not in self.models_usage:
+            self.models_usage[model_name] = ModelUsage(
+                model_name=model_name,
+                family=family,
+                thinking_credits_limit=thinking_limit,
+                flow_credits_limit=flow_limit
+            )
+            logger.info(f"Modèle {model_name} ({family.value}) enregistré pour le suivi quotas")
     
     def update_agent_status(
         self,

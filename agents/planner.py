@@ -5,8 +5,12 @@ from typing import List, Dict, Any
 from abc import ABC, abstractmethod
 from loguru import logger
 
-from ..core.context import Context, Task, TaskStatus, AgentType
-from ..models.base import BaseModel
+try:
+    from ..core.context import Context, Task, TaskStatus, AgentType
+    from ..models.base import BaseModel
+except ImportError:
+    from core.context import Context, Task, TaskStatus, AgentType
+    from models.base import BaseModel
 
 
 class BaseAgent(ABC):
@@ -16,6 +20,11 @@ class BaseAgent(ABC):
         self.model = model
         self.name = name
         self.agent_type = None
+        self.auto_accept_manager = None
+
+    def set_auto_accept_manager(self, manager):
+        """Définit le gestionnaire d'auto-accept"""
+        self.auto_accept_manager = manager
     
     @abstractmethod
     async def execute(self, task: Task, context: Context) -> str:

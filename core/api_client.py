@@ -7,7 +7,15 @@ from pathlib import Path
 import json
 from loguru import logger
 
-from ..config import settings
+try:
+    from ..config import settings
+except ImportError:
+    # Fallback pour exécution hors package
+    import sys
+    import os
+    sys.path.append(str(Path(__file__).parent.parent))
+    from config import settings
+
 
 
 class AntigravityAPIError(Exception):
@@ -28,7 +36,7 @@ class AntigravityClient:
         self.timeout = settings.timeout
         
         if not self.api_key:
-            logger.warning("Aucune clé API Antigravity fournie. Certaines fonctionnalités peuvent ne pas fonctionner.")
+            logger.info("Aucune clé API Antigravity fournie. Mode dégradé (local) actif.")
     
     def _get_headers(self) -> Dict[str, str]:
         """Génère les en-têtes pour les requêtes API"""

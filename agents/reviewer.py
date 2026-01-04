@@ -5,8 +5,12 @@ from typing import Dict, Any, List
 import json
 from loguru import logger
 
-from ..core.context import Context, Task, TaskStatus, AgentType
-from ..models.base import BaseModel
+try:
+    from ..core.context import Context, Task, TaskStatus, AgentType
+    from ..models.base import BaseModel
+except ImportError:
+    from core.context import Context, Task, TaskStatus, AgentType
+    from models.base import BaseModel
 from .planner import BaseAgent
 
 
@@ -83,7 +87,10 @@ class ReviewerAgent(BaseAgent):
     async def _read_file_content(self, file_path: str, context: Context) -> str:
         """Lit le contenu d'un fichier"""
         try:
-            from ..core.api_client import AntigravityClient
+            try:
+                from ..core.api_client import AntigravityClient
+            except ImportError:
+                from core.api_client import AntigravityClient
             from pathlib import Path
             
             # Essayer l'API Antigravity

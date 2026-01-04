@@ -29,10 +29,16 @@ class Orchestrator:
     
     def _init_monitoring(self):
         """Initialise le système de monitoring"""
-        from ..monitoring.dashboard import MonitoringDashboard
-        from ..monitoring.cache_manager import CacheManager, CacheConfig
-        from ..monitoring.auto_accept import AutoAcceptManager
-        from ..monitoring.recovery_tools import RecoveryTools
+        try:
+            from ..monitoring.dashboard import MonitoringDashboard
+            from ..monitoring.cache_manager import CacheManager, CacheConfig
+            from ..monitoring.auto_accept import AutoAcceptManager
+            from ..monitoring.recovery_tools import RecoveryTools
+        except ImportError:
+            from monitoring.dashboard import MonitoringDashboard
+            from monitoring.cache_manager import CacheManager, CacheConfig
+            from monitoring.auto_accept import AutoAcceptManager
+            from monitoring.recovery_tools import RecoveryTools
         
         # Initialiser le dashboard
         self.dashboard = MonitoringDashboard()
@@ -61,6 +67,28 @@ class Orchestrator:
         # Enregistrer dans le dashboard si le monitoring est activé
         if self.enable_monitoring and self.dashboard:
             self.dashboard.register_agent(agent_instance.name, agent_type.value)
+            
+            # Auto-Discovery et enregistrement du modèle pour affichage des quotas
+            if hasattr(agent_instance, 'model'):
+                try:
+                    # Import local pour éviter problèmes circulaires si monitoring désactivé
+                    try:
+                        from ..monitoring.dashboard import ModelFamily
+                    except ImportError:
+                        from monitoring.dashboard import ModelFamily
+                        
+                    model = agent_instance.model
+                    model_name = getattr(model, 'model_name', f"{agent_instance.name} Model")
+                    
+                    # Heuristique simple pour la famille
+                    family = ModelFamily.OPENAI
+                    if 'gemini' in model_name.lower(): family = ModelFamily.GEMINI
+                    elif 'claude' in model_name.lower(): family = ModelFamily.CLAUDE
+                    
+                    # On fixe des limites arbitraires mais réalistes (1M tokens)
+                    self.dashboard.register_model(model_name, family, thinking_limit=1000000, flow_limit=1000000)
+                except Exception as e:
+                    logger.warning(f"Impossible d'enregistrer le modèle pour {agent_instance.name}: {e}")
         
         logger.info(f"Agent {agent_type.value} enregistré")
     
@@ -207,7 +235,23 @@ class Orchestrator:
         """Retourne toutes les données du dashboard"""
         if not self.enable_monitoring or not self.dashboard:
             return {"error": "Monitoring désactivé"}
-        return self.dashboard.get_full_dashboard_data()
+        data = self.dashboard.get_full_dashboard_data()
+        
+        # Injecter les tâches du contexte actuel
+        if self.context and self.context.tasks:
+            tasks_list = []
+            for task_id, task in self.context.tasks.items():
+                tasks_list.append({
+                    "id": task.id,
+                    "description": task.description,
+                    "status": task.status.value,
+                    "agent": task.assigned_agent.value if task.assigned_agent else None,
+                    "dependencies": task.dependencies
+                })
+            data["tasks"] = tasks_list
+            data["project_name"] = self.context.project_name
+        
+        return data
     
     def get_quota_summary(self) -> dict:
         """Retourne le résumé des quotas"""

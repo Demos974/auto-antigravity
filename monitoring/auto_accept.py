@@ -69,9 +69,9 @@ class AutoAcceptManager:
         
         self.rules[ActionType.TERMINAL_COMMAND] = AutoAcceptRule(
             action_type=ActionType.TERMINAL_COMMAND,
-            enabled=False,  # Par défaut, les commandes nécessitent confirmation
-            requires_confirmation=True,
-            blocked_patterns=["rm -rf", "del /S /Q", "format", "mkfs"]
+            enabled=True,  # Activé par défaut (contrôlé par le switch global)
+            requires_confirmation=False, # Vrai auto-accept
+            blocked_patterns=["rm -rf", "del /S /Q", "format", "mkfs", "sudo", "Format-Volume"]
         )
         
         self.rules[ActionType.CODE_GENERATION] = AutoAcceptRule(

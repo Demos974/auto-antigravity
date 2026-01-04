@@ -5,7 +5,14 @@ import sys
 from pathlib import Path
 from loguru import logger
 
-from ..config import settings
+try:
+    from ..config import settings
+except ImportError:
+    import sys
+    import os
+    sys.path.append(str(Path(__file__).parent.parent))
+    from config import settings
+
 
 
 def setup_logger():

@@ -1,0 +1,69 @@
+﻿
+Name                           Value                                           
+----                           -----                                           
+ALLUSERSPROFILE                C:\ProgramData                                  
+ANTHROPIC_AUTH_TOKEN           663f635b007846009bc399f8cdfaa09c.d0tD87RONQLR...
+ANTHROPIC_BASE_URL             https://api.z.ai/api/anthropic                  
+ANTIGRAVITY_AGENT              1                                               
+ANTIGRAVITY_CLI_ALIAS          agy                                             
+APPDATA                        C:\Users\antho\AppData\Roaming                  
+ChocolateyInstall              C:\ProgramData\chocolatey                       
+ChocolateyLastPathUpdate       134089334791150196                              
+CHROME_CRASHPAD_PIPE_NAME      \\.\pipe\crashpad_34100_BPSEKODEFYJAIVOC        
+COLORTERM                      truecolor                                       
+CommonProgramFiles             C:\Program Files\Common Files                   
+CommonProgramFiles(x86)        C:\Program Files (x86)\Common Files             
+CommonProgramW6432             C:\Program Files\Common Files                   
+COMPUTERNAME                   MASTER                                          
+ComSpec                        C:\WINDOWS\system32\cmd.exe                     
+DriverData                     C:\Windows\System32\Drivers\DriverData          
+EFC_12040_1592913036           1                                               
+GIT_ASKPASS                    c:\Users\antho\AppData\Local\Programs\Antigra...
+GPU_MAX_ALLOC_PERCENT          100                                             
+GPU_MAX_HEAP_SIZE              100                                             
+GPU_MAX_SINGLE_ALLOC_PERCENT   100                                             
+GPU_MAX_USE_SYNC_OBJECTS       1                                               
+GPU_SINGLE_ALLOC_PERCENT       100                                             
+HOMEDRIVE                      C:                                              
+HOMEPATH                       \Users\antho                                    
+LANG                           en_US.UTF-8                                     
+LOCALAPPDATA                   C:\Users\antho\AppData\Local                    
+LOGONSERVER                    \\MASTER                                        
+NUMBER_OF_PROCESSORS           20                                              
+OneDrive                       C:\Users\antho\OneDrive                         
+OneDriveConsumer               C:\Users\antho\OneDrive                         
+ORIGINAL_XDG_CURRENT_DESKTOP   undefined                                       
+OS                             Windows_NT                                      
+PAGER                          cat                                             
+Path                           C:\Python314\Scripts\;C:\Python314\;C:\WINDOW...
+PATHEXT                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;....
+PROCESSOR_ARCHITECTURE         AMD64                                           
+PROCESSOR_IDENTIFIER           Intel64 Family 6 Model 198 Stepping 2, Genuin...
+PROCESSOR_LEVEL                6                                               
+PROCESSOR_REVISION             c602                                            
+ProgramData                    C:\ProgramData                                  
+ProgramFiles                   C:\Program Files                                
+ProgramFiles(x86)              C:\Program Files (x86)                          
+ProgramW6432                   C:\Program Files                                
+PSModulePath                   C:\Users\antho\OneDrive\Documents\WindowsPowe...
+PUBLIC                         C:\Users\Public                                 
+SESSIONNAME                    Console                                         
+SystemDrive                    C:                                              
+SystemRoot                     C:\WINDOWS                                      
+TEMP                           C:\Users\antho\AppData\Local\Temp               
+TERM_PROGRAM                   vscode                                          
+TERM_PROGRAM_VERSION           1.104.0                                         
+TMP                            C:\Users\antho\AppData\Local\Temp               
+USERDOMAIN                     MASTER                                          
+USERDOMAIN_ROAMINGPROFILE      MASTER                                          
+USERNAME                       antho                                           
+USERPROFILE                    C:\Users\antho                                  
+VSCODE_GIT_ASKPASS_EXTRA_ARGS                                                  
+VSCODE_GIT_ASKPASS_MAIN        c:\Users\antho\AppData\Local\Programs\Antigra...
+VSCODE_GIT_ASKPASS_NODE        C:\Users\antho\AppData\Local\Programs\Antigra...
+VSCODE_GIT_IPC_HANDLE          \\.\pipe\vscode-git-dd6cf18464-sock             
+VSCODE_INJECTION               1                                               
+VSCODE_PYTHON_AUTOACTIVATE_... 1                                               
+windir                         C:\WINDOWS                                      
+
+

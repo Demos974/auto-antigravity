@@ -1,2 +1,10 @@
 vscode/**
 .gitignore
+.git/**
+node_modules/**
+src/extension.ts
+src/extension.js.map
+out/**
+test/**
+**/*.ts
+**/*.map

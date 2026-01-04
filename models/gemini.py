@@ -4,6 +4,10 @@ Intégration avec Google Gemini
 from typing import Optional, Dict, Any, List
 from loguru import logger
 
+import warnings
+# Suppress Google Gemini deprecation warning
+warnings.filterwarnings("ignore", category=FutureWarning, module="google.generativeai")
+
 try:
     import google.generativeai as genai
     GEMINI_AVAILABLE = True

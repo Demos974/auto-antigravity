@@ -6,8 +6,12 @@ from pathlib import Path
 import json
 from loguru import logger
 
-from ..core.context import Context, Task, TaskStatus, AgentType
-from ..models.base import BaseModel
+try:
+    from ..core.context import Context, Task, TaskStatus, AgentType
+    from ..models.base import BaseModel
+except ImportError:
+    from core.context import Context, Task, TaskStatus, AgentType
+    from models.base import BaseModel
 from .planner import BaseAgent
 
 
@@ -120,8 +124,29 @@ IMPORTANT: Retourne UNIQUEMENT le JSON valide, sans autre texte."""
     
     async def _write_file(self, file_path: str, content: str, context: Context):
         """Écrit un fichier dans le projet"""
+        # Vérification Auto-Accept
+        if self.auto_accept_manager:
+            try:
+                from ..monitoring.auto_accept import ActionType
+            except ImportError:
+                from monitoring.auto_accept import ActionType
+
+            check = await self.auto_accept_manager.should_accept_action(
+                ActionType.FILE_WRITE,
+                {"file_path": file_path, "content": content[:50], "file_size": len(content)}
+            )
+            
+            if not check["accept"]:
+                msg = f"Action bloquée par Auto-Accept: {check['reason']}"
+                logger.warning(msg)
+                self._add_message(context, "system", msg)
+                return
+
         try:
-            from ..core.api_client import AntigravityClient
+            try:
+                from ..core.api_client import AntigravityClient
+            except ImportError:
+                from core.api_client import AntigravityClient
             
             # Essayer d'utiliser l'API Antigravity
             client = AntigravityClient()
