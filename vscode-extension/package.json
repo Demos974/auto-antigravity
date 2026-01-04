@@ -1,0 +1,99 @@
+{
+  "name": "auto-antigravity",
+  "displayName": "Auto-Antigravity",
+  "description": "Framework multi-agents avec monitoring avance pour Google Antigravity IDE",
+  "version": "0.2.0",
+  "publisher": "auto-antigravity",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/votre-username/auto-antigravity"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Machine Learning",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./src/extension-simple.js",
+  "contributes": {
+    "configuration": {
+      "title": "Auto-Antigravity",
+      "properties": {
+        "autoAntigravity.monitoring.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Active le monitoring des agents"
+        },
+        "autoAntigravity.monitoring.refreshInterval": {
+          "type": "number",
+          "default": 5000,
+          "description": "Intervalle de rafraichissement du dashboard (ms)"
+        },
+        "autoAntigravity.autoAccept.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Active le mode Auto-Accept"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "autoAntigravity",
+          "title": "Auto-Antigravity",
+          "icon": "assets/logo.svg"
+        }
+      ]
+    },
+    "views": {
+      "autoAntigravity": [
+        {
+          "type": "webview",
+          "id": "autoAntigravity.dashboard",
+          "name": "Dashboard"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "autoAntigravity.showDashboard",
+        "title": "Show Dashboard",
+        "icon": "$(dashboard)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.refresh",
+        "title": "Refresh Dashboard",
+        "icon": "$(refresh)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.toggleAutoAccept",
+        "title": "Toggle Auto-Accept",
+        "icon": "$(checklist)",
+        "category": "Auto-Antigravity"
+      },
+      {
+        "command": "autoAntigravity.executeTask",
+        "title": "Execute New Task",
+        "icon": "$(run)",
+        "category": "Auto-Antigravity"
+      }
+    ],
+    "statusBarItems": [
+      {
+        "id": "autoAntigravity.status",
+        "name": "Auto-Antigravity Status",
+        "alignment": "right",
+        "text": "$(info) AA: Ready"
+      }
+    ]
+  },
+  "scripts": {
+    "package": "vsce package"
+  }
+}
